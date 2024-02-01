@@ -1,8 +1,7 @@
 import * as React from "react";
 import { Action, ActionPanel, Form } from "@raycast/api";
 
-const DEEP_LINK =
-  "raycast://extensions/cyxn/query-chatgpt/query-chatgpt-execute-custom-command?arguments=%7B%22prompt%22%3A%22%22%7D";
+const DEEP_LINK = "raycast://extensions/cyxn/query-chatgpt/query-chatgpt-execute-custom-command";
 
 const MODE_OPTIONS = [
   { title: "Open in Background", value: "BACKGROUND" },
@@ -27,7 +26,7 @@ export default function Command() {
           quicklink={{
             link: `${props.link}?arguments=${encodeURIComponent(
               JSON.stringify({ prompt: props.prompt, gptUrl: props.gptUrl }),
-            )}&additionalPrompt=`,
+            )}`,
           }}
         />
       </ActionPanel>

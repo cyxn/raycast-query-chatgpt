@@ -1,21 +1,26 @@
-import { runAppleScript } from "run-applescript";
-import { Application, getPreferenceValues, showToast, Toast } from "@raycast/api";
+import { runAppleScript } from "@raycast/utils";
+import { showToast, Toast } from "@raycast/api";
 import { composeApplescript } from "./compose-applescript";
 import { TabOpenerArguments } from "./types";
 
-interface OsaError {
-  stderr: string;
-}
-
 export async function openBrowserTab({ browserName, prompt, gptUrl }: TabOpenerArguments): Promise<boolean> {
   try {
-    const jsResult = await runAppleScript(
-      composeApplescript({
-        browserName,
-        prompt,
-        gptUrl,
-      }),
-    );
+    console.log({ browserName, prompt, gptUrl });
+    const appleScript = composeApplescript({
+      browserName,
+      prompt,
+      gptUrl,
+    });
+    //    console.log({ appleScript });
+
+    const jsResult = await runAppleScript(appleScript);
+    //    const jsResult = await runAppleScript(
+    //      `on run argv
+    //  return "hello, " & item 1 of argv & "."
+    //end run`,
+    //      ["world"],
+    //    );
+    console.log({ jsResult });
 
     if (jsResult === "false") {
       await showToast({
@@ -26,10 +31,16 @@ export async function openBrowserTab({ browserName, prompt, gptUrl }: TabOpenerA
 
       return false;
     }
+    await showToast({
+      style: Toast.Style.Success,
+      title: "Magic",
+      message: `Happenning`,
+    });
 
     return !!jsResult;
   } catch (e) {
-    const message = (e as OsaError).stderr;
+    console.log(e);
+    const message = e.message;
 
     if (message.includes("Allow JavaScript from Apple Events")) {
       await showToast({

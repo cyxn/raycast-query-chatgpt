@@ -1,3 +1,5 @@
+import { randomUUID } from "node:crypto";
+
 import { getTabJavascript } from "./get-tab-javascript";
 import { TabOpenerArguments } from "./types";
 
@@ -9,27 +11,27 @@ function runJS(browser: string, code: string): string {
   }
 }
 
+function composeUrlWithRandomId(gptUrl: string): string {
+  const id = randomUUID();
+
+  const url = new URL(gptUrl);
+  url.searchParams.set("id", id);
+
+  return url.toString();
+}
+
 export function composeApplescript({ browserName, prompt, gptUrl }: TabOpenerArguments): string {
+  const completeUrl = composeUrlWithRandomId(gptUrl);
   return `
-set possibleChars to "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
-set randomString to ""
-set stringLength to 16 -- You can change the length of the string
-
-repeat with i from 1 to stringLength
-    set randomChar to some item of possibleChars
-    set randomString to randomString & randomChar
-end repeat
-
--- Use the random string
-tell application "Arc"
-    open location "${gptUrl}?id=" & randomString
+tell application "${browserName}"
+    open location "${completeUrl}"
 end tell
 
 delay 2
 
-tell application "Arc"
+tell application "${browserName}"
     repeat with w in (every window)		
-        repeat with t in (every tab whose URL equal "${gptUrl}?id=" & randomString) of w
+        repeat with t in (every tab whose URL equal "${completeUrl}") of w
           tell t
             return ${runJS(browserName, getTabJavascript(prompt))}
           end tell
