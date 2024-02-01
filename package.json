@@ -8,14 +8,55 @@
   "license": "MIT",
   "commands": [
     {
-      "name": "index",
-      "title": "Query ChatGPT",
-      "description": "Template for running a script without any view",
-      "mode": "no-view"
+      "name": "query-chatgpt-custom-create",
+      "title": "Create Custom Command",
+      "subtitle": "Query ChatGPT",
+      "description": "Create a custom command using a quicklinks",
+      "mode": "view"
+    },
+    {
+      "name": "query-chatgpt-execute-custom-command",
+      "title": "Execute Custom Command",
+      "subtitle": "Query ChatGPT",
+      "description": "Execute a custom command using a quicklinks",
+      "mode": "no-view",
+      "arguments": [
+        {
+          "name": "prompt",
+          "placeholder": "Prompt",
+          "type": "text",
+          "required": true
+        },
+        {
+          "name": "gptUrl",
+          "placeholder": "GPT Url",
+          "type": "text",
+          "required": true
+        },
+        {
+          "name": "mode",
+          "placeholder": "Open Mode",
+          "type": "text",
+          "required": false
+        }
+      ]
+    }
+  ],
+  "preferences": [
+    {
+      "name": "browser",
+      "type": "appPicker",
+      "title": "Browser where ChatGPT will be opened.",
+      "placeholder": "Enter your browser",
+      "default": "Safari",
+      "description": "Script will open and control the ChatGPT tab in this browser.",
+      "required": true
     }
   ],
   "dependencies": {
-    "@raycast/api": "^1.66.2"
+    "@raycast/api": "^1.66.2",
+    "@raycast/utils": "^1.11.1",
+    "run-applescript": "^7.0.0"
   },
   "devDependencies": {
     "@raycast/eslint-config": "^1.0.6",
