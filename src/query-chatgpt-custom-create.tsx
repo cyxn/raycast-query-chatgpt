@@ -10,23 +10,40 @@ const MODE_OPTIONS = [
 
 const defaultMode = MODE_OPTIONS[0].value;
 
+function composeFullUrl({ link, prompt, gptUrl, withCustomQuery }): string {
+  // Construct the arguments object with the prompt and gptUrl values
+  const args = {
+    prompt: prompt,
+    gptUrl: gptUrl,
+    query: withCustomQuery ? `{Query}` : "",
+  };
+
+  // Convert the arguments object to a string
+  let result = encodeURIComponent(JSON.stringify(args));
+  if (!withCustomQuery) {
+    return `${link}?arguments=${result}`;
+  }
+
+  // Manually replace the `{Query}` placeholder to ensure it is not encoded
+  result = result.replace("%7BQuery%7D", "{Query}");
+
+  // Construct and return the full URL
+  return `${link}?arguments=${result}`;
+}
+
 export default function Command() {
   const [mode, setMode]: [string, React.Dispatch<React.SetStateAction<string>>] = React.useState(defaultMode);
   const [gptUrl, setGptUrl]: [string, React.Dispatch<React.SetStateAction<string>>] = React.useState("");
   const [prompt, setPrompt]: [string, React.Dispatch<React.SetStateAction<string>>] = React.useState("");
-  const [shouldOpenAfterFinished, setShouldOpenAfterFinished]: [
-    boolean,
-    React.Dispatch<React.SetStateAction<boolean>>,
-  ] = React.useState(false);
+  const [withCustomQuery, setWithCustomQuery]: [boolean, React.Dispatch<React.SetStateAction<boolean>>] =
+    React.useState(true);
 
-  function CustomCreateAction(props: { link: string; prompt: string; gptUrl: string }) {
+  function CustomCreateAction(props: { link: string; prompt: string; gptUrl: string; withCustomQuery: boolean }) {
     return (
       <ActionPanel>
         <Action.CreateQuicklink
           quicklink={{
-            link: `${props.link}?arguments=${encodeURIComponent(
-              JSON.stringify({ prompt: props.prompt, gptUrl: props.gptUrl }),
-            )}`,
+            link: composeFullUrl(props),
           }}
         />
       </ActionPanel>
@@ -34,18 +51,23 @@ export default function Command() {
   }
 
   return (
-    <Form isLoading={false} actions={<CustomCreateAction link={DEEP_LINK} prompt={prompt} gptUrl={gptUrl} />}>
+    <Form
+      isLoading={false}
+      actions={
+        <CustomCreateAction link={DEEP_LINK} prompt={prompt} gptUrl={gptUrl} withCustomQuery={withCustomQuery} />
+      }
+    >
       <Form.Dropdown value={mode} id="mode" title="Tab Open Mode" onChange={setMode}>
         {MODE_OPTIONS.map(({ title, value }) => {
           return <Form.Dropdown.Item key={value} title={title} value={value} />;
         })}
       </Form.Dropdown>
-      {/*<Form.Checkbox*/}
-      {/*  label="Should open tab once answer is there"*/}
-      {/*  value={shouldOpenAfterFinished}*/}
-      {/*  onChange={setShouldOpenAfterFinished}*/}
-      {/*  id="shouldOpenAfterFinished"*/}
-      {/*/>*/}
+      <Form.Checkbox
+        label="Add additional query when executing custom command"
+        value={withCustomQuery}
+        onChange={setWithCustomQuery}
+        id="shouldOpenAfterFinished"
+      />
       <Form.TextArea
         id="gptUrl"
         title="GPT Url"

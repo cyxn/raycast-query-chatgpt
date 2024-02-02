@@ -34,10 +34,10 @@
           "required": true
         },
         {
-          "name": "mode",
-          "placeholder": "Open Mode",
+          "name": "query",
+          "placeholder": "Your query",
           "type": "text",
-          "required": false
+          "required": true
         }
       ]
     }

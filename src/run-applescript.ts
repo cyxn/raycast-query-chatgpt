@@ -3,24 +3,28 @@ import { showToast, Toast } from "@raycast/api";
 import { composeApplescript } from "./compose-applescript";
 import { TabOpenerArguments } from "./types";
 
-export async function openBrowserTab({ browserName, prompt, gptUrl }: TabOpenerArguments): Promise<boolean> {
+function sanitizeInput(input: string): string {
+  const disallowedChars = /[^a-zA-Z0-9,./?=\- %:#&;_]/g;
+
+  const sanitizedInput = input.replace(disallowedChars, "");
+
+  console.log({ input, sanitizedInput });
+  return sanitizedInput;
+}
+
+export async function openBrowserTab({ browserName, prompt, gptUrl, query }: TabOpenerArguments): Promise<boolean> {
   try {
-    console.log({ browserName, prompt, gptUrl });
+    const correctBrowserName = sanitizeInput(browserName);
+    const correctPrompt = sanitizeInput(prompt + "\n\n" + query);
+    const correctGptUrl = sanitizeInput(gptUrl);
+
     const appleScript = composeApplescript({
-      browserName,
-      prompt,
-      gptUrl,
+      browserName: correctBrowserName,
+      prompt: correctPrompt,
+      gptUrl: correctGptUrl,
     });
-    //    console.log({ appleScript });
 
     const jsResult = await runAppleScript(appleScript);
-    //    const jsResult = await runAppleScript(
-    //      `on run argv
-    //  return "hello, " & item 1 of argv & "."
-    //end run`,
-    //      ["world"],
-    //    );
-    console.log({ jsResult });
 
     if (jsResult === "false") {
       await showToast({
@@ -39,7 +43,6 @@ export async function openBrowserTab({ browserName, prompt, gptUrl }: TabOpenerA
 
     return !!jsResult;
   } catch (e) {
-    console.log(e);
     const message = e.message;
 
     if (message.includes("Allow JavaScript from Apple Events")) {
