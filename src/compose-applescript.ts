@@ -22,6 +22,7 @@ function composeUrlWithRandomId(gptUrl: string): string {
 
 export function composeApplescript({ browserName, prompt, gptUrl }: TabOpenerArguments): string {
   const completeUrl = composeUrlWithRandomId(gptUrl);
+  const tabJavascript = getTabJavascript(prompt);
   return `
 tell application "${browserName}"
     open location "${completeUrl}"
@@ -33,7 +34,7 @@ tell application "${browserName}"
     repeat with w in (every window)		
         repeat with t in (every tab whose URL equal "${completeUrl}") of w
           tell t
-            return ${runJS(browserName, getTabJavascript(prompt))}
+            return ${runJS(browserName, tabJavascript)}
           end tell
         end repeat	
     end repeat

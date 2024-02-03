@@ -4,11 +4,10 @@ import { composeApplescript } from "./compose-applescript";
 import { TabOpenerArguments } from "./types";
 
 function sanitizeInput(input: string): string {
-  const disallowedChars = /[^a-zA-Z0-9,./?=\- %:#&;_]/g;
+  const disallowedChars = /[^a-zA-Z0-9,./?=\- %:#&;_\r\n]/g;
 
   const sanitizedInput = input.replace(disallowedChars, "");
 
-  console.log({ input, sanitizedInput });
   return sanitizedInput;
 }
 
@@ -17,7 +16,6 @@ export async function openBrowserTab({ browserName, prompt, gptUrl, query }: Tab
     const correctBrowserName = sanitizeInput(browserName);
     const correctPrompt = sanitizeInput(prompt + "\n\n" + query);
     const correctGptUrl = sanitizeInput(gptUrl);
-
     const appleScript = composeApplescript({
       browserName: correctBrowserName,
       prompt: correctPrompt,
@@ -25,7 +23,7 @@ export async function openBrowserTab({ browserName, prompt, gptUrl, query }: Tab
     });
 
     const jsResult = await runAppleScript(appleScript);
-
+    //    const jsResult = "";
     if (jsResult === "false") {
       await showToast({
         style: Toast.Style.Failure,

@@ -17,7 +17,7 @@ const execute = () => {
 
   if (element) {
     element.focus(); // Focus the element
-    element.value = '${prompt}';
+    element.value = \`${prompt}\`;
 
     // Create a new 'input' event
     const event = new Event('input', { bubbles: true });
