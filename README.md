@@ -17,3 +17,13 @@ of the code, while a freshly opened tab in the background generates a response f
 parts that require consultation with ChatGPT or need code to be written, and with this extension, you can open even more
 tabs with ChatGPT. My workflow doesn't rely heavily on immediate responses; in fact, GPT-4 often takes too long to
 respond (5+ seconds) for me to wait.
+
+## Installation & Usage
+
+1. Select correct browser in extension settings.
+2. Create your first custom command via "Create Custom Command".
+3. Enter GPT Url. It can be any GPT or any existing chat link.
+4. Provide custom prompt. You can leave that empty as well.
+5. On success, you will be redirected to "Create Quicklink" Raycast functionality, enter the name of quicklink.
+6. Execute the quicklink to open ChatGPT tab in the browser with your custom query.
+
