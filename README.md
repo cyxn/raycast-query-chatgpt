@@ -17,9 +17,3 @@ of the code, while a freshly opened tab in the background generates a response f
 parts that require consultation with ChatGPT or need code to be written, and with this extension, you can open even more
 tabs with ChatGPT. My workflow doesn't rely heavily on immediate responses; in fact, GPT-4 often takes too long to
 respond (5+ seconds) for me to wait.
-
-***
-
-## Todolist
-
-- screenshots
