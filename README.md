@@ -23,5 +23,3 @@ respond (5+ seconds) for me to wait.
 ## Todolist
 
 - screenshots
-- icon
-- changelog
