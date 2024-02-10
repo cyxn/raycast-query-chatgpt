@@ -22,11 +22,14 @@ export async function openBrowserTab({ browserName, prompt, gptUrl, query }: Tab
       gptUrl: correctGptUrl,
     });
 
-    const jsResult = await runAppleScript(appleScript);
-    await showToast({
-      style: Toast.Style.Success,
-      title: "ChatGPT opened. Asking...",
+    const toast = await showToast({
+      style: Toast.Style.Animated,
+      title: "Opening ChatGPT",
     });
+
+    const jsResult = await runAppleScript(appleScript);
+    toast.style = Toast.Style.Success;
+    toast.title = "ChatGPT has opened. Asking...";
 
     return !!jsResult;
   } catch (error) {
