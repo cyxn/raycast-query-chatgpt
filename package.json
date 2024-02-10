@@ -2,9 +2,15 @@
   "$schema": "https://www.raycast.com/schemas/extension.json",
   "name": "query-chatgpt",
   "title": "Query ChatGPT",
-  "description": "",
+  "description": "Opens ChatGPT in your browser and executes your query in it",
   "icon": "command-icon.png",
   "author": "cyxn",
+  "categories": [
+    "Productivity",
+    "Developer Tools",
+    "Web",
+    "Other"
+  ],
   "license": "MIT",
   "commands": [
     {

@@ -1,4 +1,6 @@
-export function getTabJavascript(prompt: string): string {
+import { TabOpenerArguments } from "./types";
+
+export function getTabJavascript(prompt: TabOpenerArguments["prompt"]): string {
   return `const triggerClick = () => {
   // Find the button by its data-testid attribute
   const button = document.querySelector(\`button[data-testid='send-button']\`);

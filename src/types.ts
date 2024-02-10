@@ -5,12 +5,20 @@ export type TabOpenerArguments = {
   query: string;
 };
 
+export type ComposeAppleScriptArguments = Pick<TabOpenerArguments, "browserName" | "prompt" | "gptUrl">;
+
+export type CustomCommandCreateConfigurationParams = {
+  prompt: TabOpenerArguments["prompt"];
+  gptUrl: TabOpenerArguments["gptUrl"];
+  withCustomQuery: boolean;
+};
+
 export type ExecuteCustomCommand = {
   fallbackText?: string;
   arguments: {
-    prompt: string;
-    gptUrl: string;
-    query: string;
+    prompt: TabOpenerArguments["prompt"];
+    gptUrl: TabOpenerArguments["gptUrl"];
+    query: TabOpenerArguments["query"];
   };
   launchType: string;
   launchContext?: string;

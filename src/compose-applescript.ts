@@ -1,26 +1,26 @@
 import { randomUUID } from "node:crypto";
 
 import { getTabJavascript } from "./get-tab-javascript";
-import { TabOpenerArguments } from "./types";
+import { ComposeAppleScriptArguments, TabOpenerArguments } from "./types";
 
-function runJS(browser: string, code: string): string {
-  if (browser === "Safari") {
+function runJS(browserName: TabOpenerArguments["browserName"], code: string): string {
+  if (browserName === "Safari") {
     return `do javascript "${code}"`;
   } else {
     return `execute javascript "${code}"`;
   }
 }
 
-function composeUrlWithRandomId(gptUrl: string): string {
+function composeUrlWithRandomId(gptUrl: TabOpenerArguments["gptUrl"]): string {
   const id = randomUUID();
 
   const url = new URL(gptUrl);
-  url.searchParams.set("id", id);
+  url.searchParams.set("_qchat-id", id);
 
   return url.toString();
 }
 
-export function composeApplescript({ browserName, prompt, gptUrl }: TabOpenerArguments): string {
+export function composeApplescript({ browserName, prompt, gptUrl }: ComposeAppleScriptArguments): string {
   const completeUrl = composeUrlWithRandomId(gptUrl);
   const tabJavascript = getTabJavascript(prompt);
   return `

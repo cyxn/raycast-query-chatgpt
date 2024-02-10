@@ -1,4 +1,4 @@
-import { runAppleScript } from "@raycast/utils";
+import { runAppleScript, showFailureToast } from "@raycast/utils";
 import { showToast, Toast } from "@raycast/api";
 import { composeApplescript } from "./compose-applescript";
 import { TabOpenerArguments } from "./types";
@@ -23,7 +23,7 @@ export async function openBrowserTab({ browserName, prompt, gptUrl, query }: Tab
     });
 
     const jsResult = await runAppleScript(appleScript);
-    //    const jsResult = "";
+
     if (jsResult === "false") {
       await showToast({
         style: Toast.Style.Failure,
@@ -35,21 +35,12 @@ export async function openBrowserTab({ browserName, prompt, gptUrl, query }: Tab
     }
     await showToast({
       style: Toast.Style.Success,
-      title: "Magic",
-      message: `Happenning`,
+      title: "ChatGPT opened. Asking...",
     });
 
     return !!jsResult;
-  } catch (e) {
-    const message = e.message;
-
-    if (message.includes("Allow JavaScript from Apple Events")) {
-      await showToast({
-        style: Toast.Style.Failure,
-        title: "Cannot run JavaScript in selected browser.",
-        message: `Enable the 'Allow JavaScript from Apple Events' option in ${browserName}'s Develop menu.`,
-      });
-    }
+  } catch (error) {
+    await showFailureToast(error, { title: "Could not run AppleScript" });
 
     return false;
   }
