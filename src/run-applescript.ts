@@ -23,16 +23,6 @@ export async function openBrowserTab({ browserName, prompt, gptUrl, query }: Tab
     });
 
     const jsResult = await runAppleScript(appleScript);
-
-    if (jsResult === "false") {
-      await showToast({
-        style: Toast.Style.Failure,
-        title: "Unknown error occurred",
-        message: `Unknown error occurred. Please submit an issue`,
-      });
-
-      return false;
-    }
     await showToast({
       style: Toast.Style.Success,
       title: "ChatGPT opened. Asking...",
