@@ -54,6 +54,7 @@ export async function openBrowserTab({ browserName, prompt, gptUrl, query }: Tab
       urlToOpen: newUrlToOpen,
       urlToSearch,
     });
+    console.log(appleScript);
 
     const toast = await showToast({
       style: Toast.Style.Animated,
