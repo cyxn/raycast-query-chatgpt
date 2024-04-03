@@ -19,12 +19,12 @@ export function composeApplescript({
   return `
 on run
     set urlExists to false
-    set urlToCompare to "${urlToSearch}"
+    set urlToSearch to "${urlToSearch}"
     set urlToUse to "${urlToOpen}"
     tell application "${browserName}"
         repeat with w in (every window)
             repeat with t in (every tab of w)
-                if URL of t is urlToCompare then
+                if URL of t is urlToSearch then
                     set urlExists to true
                     exit repeat
                 end if

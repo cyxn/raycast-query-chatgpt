@@ -34,9 +34,9 @@ export async function openBrowserTab({ browserName, prompt, gptUrl, query }: Tab
     const correctBrowserName = sanitizeInput(browserName);
     const correctPrompt = sanitizeInput(prompt + "\n\n" + query);
     const correctGptUrl = sanitizeInput(gptUrl);
-    const finalUrlToOpen = composeUrlWithRandomId(correctGptUrl);
+    const newUrlToOpen = composeUrlWithRandomId(correctGptUrl);
 
-    let urlToSearch = finalUrlToOpen;
+    let urlToSearch = newUrlToOpen;
     const isUrlEligibleForReusingSameTab = getIsUrlEligibleForReusingSameTab(gptUrl);
     console.debug({ isUrlEligibleForReusingSameTab, gptUrl });
 
@@ -51,7 +51,7 @@ export async function openBrowserTab({ browserName, prompt, gptUrl, query }: Tab
     const appleScript = composeApplescript({
       browserName: correctBrowserName,
       prompt: correctPrompt,
-      urlToOpen: finalUrlToOpen,
+      urlToOpen: newUrlToOpen,
       urlToSearch,
     });
 
@@ -60,6 +60,7 @@ export async function openBrowserTab({ browserName, prompt, gptUrl, query }: Tab
       title: "Opening ChatGPT",
     });
 
+    console.debug("running applescript");
     const openedUrl = await runAppleScript(appleScript);
 
     if (isUrlEligibleForReusingSameTab) {
@@ -72,6 +73,7 @@ export async function openBrowserTab({ browserName, prompt, gptUrl, query }: Tab
 
     return !!openedUrl;
   } catch (error) {
+    console.error(error);
     await showFailureToast(error, { title: "Could not run AppleScript" });
 
     return false;
