@@ -12,4 +12,4 @@
 
 ## [Fix] - 2024-05-15
 
-- Breaking change: need to recreate quicklinks since ChatGPT has change their ChatGPT link to `https://chatgpt.com/` (previously it was `https://chat.openai.com`). Fixed extension to support breaking changes.
+- ChatGPT has changed their ChatGPT link to `https://chatgpt.com/` (previously it was `https://chat.openai.com`). Fixed extension to support breaking changes — old links are supported and they are replaced by extension to new ones.
