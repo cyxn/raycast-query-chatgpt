@@ -9,3 +9,7 @@
 
 - Reuse the same browser tab only for conversations, i.e., if the URL in the custom command starts
   with `https://chat.openai.com/c/`
+
+## [Fix] - 2024-05-15
+
+- Breaking change: need to recreate quicklinks since ChatGPT has change their ChatGPT link to `https://chatgpt.com/` (previously it was `https://chat.openai.com`). Fixed extension to support breaking changes.

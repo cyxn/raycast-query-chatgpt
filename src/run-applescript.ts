@@ -26,7 +26,7 @@ export function composeUrlWithRandomId(gptUrl: TabOpenerArguments["gptUrl"]): st
 // Reusing the same tab makes sense only if the provided URL is the specific conversation
 // if the provided URL leads to custom GPT, the conversation URL will be automatically created by ChatGPT app and set into the browser URL.
 function getIsUrlEligibleForReusingSameTab(gptUrl: TabOpenerArguments["gptUrl"]): boolean {
-  return gptUrl.startsWith("https://chat.openai.com/c/");
+  return gptUrl.startsWith("https://chatgpt.com/c");
 }
 
 export async function openBrowserTab({ browserName, prompt, gptUrl, query }: TabOpenerArguments): Promise<boolean> {
@@ -63,7 +63,9 @@ export async function openBrowserTab({ browserName, prompt, gptUrl, query }: Tab
     console.debug("running applescript");
     const openedUrl = await runAppleScript(appleScript);
 
-    if (isUrlEligibleForReusingSameTab) {
+    console.debug({ openedUrl });
+
+    if (isUrlEligibleForReusingSameTab && openedUrl) {
       console.debug("setting cache", { openedUrl });
       cache.set(gptUrl, openedUrl);
     }
